@@ -164,15 +164,11 @@ export default connect((state) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
-        // backgroundColor: '#ccc',
     },
     image: {
         resizeMode: 'cover',
         flex: 1,
         position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
-        // alignItems: 'center',
-        // justifyContent: 'center',
         width: null,
         height: null,
     },
@@ -182,7 +178,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         fontSize: 24,
         textAlign: 'center',
-        marginTop: 150,
+        marginTop: 100,
         marginBottom: 50
     },
     titleword2: {

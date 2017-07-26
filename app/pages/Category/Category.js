@@ -4,10 +4,11 @@
 
 import React, {Component, PropTypes} from 'react';
 import {
-    StyleSheet, Text, View, Button, Image, Platform, Alert, ScrollView, TouchableOpacity
+    StyleSheet, Text, View, Button, Image, Platform, Alert, ScrollView, TouchableOpacity,Dimensions
 } from 'react-native';
 import colors from '../../baseComponents/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+const {width} = Dimensions.get('window');
 
 let lists = [
     {
@@ -130,8 +131,7 @@ class BtnList extends Component {
         let viewList = [];
         for (let i in conlist) {
             let row = (
-                <BtnItem illustration={conlist[i].illustration} title={conlist[i].title} key={i} id={conlist[i].id}
-                         navigation={this.props.navigation}></BtnItem>
+                <BtnItem illustration={conlist[i].illustration} title={conlist[i].title} key={i} id={conlist[i].id} navigation={this.props.navigation}></BtnItem>
             );
             viewList.push(row);
         }
@@ -195,8 +195,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white
     },
     btnContainer: {
-        width: "33%",
-        marginBottom: 30
+        width: width/3,
+        paddingBottom: 30,
     },
     text: {
         fontSize: 12,
