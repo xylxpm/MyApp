@@ -43,7 +43,6 @@ class Feedback extends Component {
 
         this._dataSource = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2,
-            //sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
         });
 
         let dataList = []
@@ -65,8 +64,6 @@ class Feedback extends Component {
             <PullToRefreshListView
                 ref={ (component) => this._pullToRefreshListView = component }
                 viewType={PullToRefreshListView.constants.viewType.listView}
-                contentContainerStyle={{backgroundColor: 'yellow', }}
-                style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
                 initialListSize={20}
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
@@ -80,7 +77,11 @@ class Feedback extends Component {
                 pullUpDistance={35}
                 pullUpStayDistance={50}
                 pullDownDistance={35}
+
                 pullDownStayDistance={50}
+
+                renderScrollComponent={alert(1)}
+
             />
         )
 

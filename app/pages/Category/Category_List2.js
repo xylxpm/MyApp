@@ -14,13 +14,13 @@ import {
 } from 'react-native';
 
 const window = Dimensions.get('window');
-const ROW_HEIGHT = 60;
 const PARALLAX_HEADER_HEIGHT = 200;
 const STICKY_HEADER_HEIGHT = 60;
 import colors from '../../baseComponents/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview'
 
 
 class Category_List extends Component {
@@ -92,15 +92,18 @@ class Category_List extends Component {
 
                     renderForeground={() => (
                       <View key="parallax-header" style={ styles.parallaxHeader }>
+
+
                         <Text style={ styles.sectionSpeakerText }>
                           {this.props.navigation.state.params.title}
                         </Text>
+
                       </View>
                     )}
 
                     renderStickyHeader={() => (
                       <View key="sticky-header" style={styles.stickySection}>
-                        <Text style={styles.stickySectionText}  onPress={() => this.props.navigation.goBack()}>{this.props.navigation.state.params.title}</Text>
+                        <Text style={styles.stickySectionText}>{this.props.navigation.state.params.title}</Text>
                       </View>
                     )}
 

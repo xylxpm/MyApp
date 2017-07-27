@@ -36,7 +36,7 @@ let lists = [
             },
             {
                 id: '5',
-                title: 'React ative',
+                title: 'React Native',
                 illustration: 'https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=13487e5d5aafa40f28cbc68fca0d682a/37d3d539b6003af35a3f150f352ac65c1138b6dc.jpg'
             },
             {

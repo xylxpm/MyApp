@@ -66,8 +66,6 @@ class Lists extends Component {
             <PullToRefreshListView
                 ref={ (component) => this._pullToRefreshListView = component }
                 viewType={PullToRefreshListView.constants.viewType.listView}
-                //contentContainerStyle={{backgroundColor: 'yellow', }}
-                //style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
                 initialListSize={20}
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
