@@ -21,7 +21,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import * as USER from '../../actions/UserAction';
 
-import TimerEnhance from 'react-native-smart-timer-enhance'
+
 import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview'
 
 

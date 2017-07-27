@@ -4,8 +4,16 @@
 
 import React, {Component} from 'react';
 import {
-    StyleSheet, TextInput, View, Button,ScrollView,Text
+    StyleSheet, TextInput, Button, ScrollView,
+    Dimensions,
+    Image,
+    ListView,
+    PixelRatio,
+    Text,
+    PullToRefreshViewAndroid,
+    View,
 } from 'react-native';
+
 import MyInfo from '../../components/MyInfo';
 import MyInfoBtn from '../../components/MyInfoBtn';
 import MyOperation from '../../components/MyOperation';
@@ -15,10 +23,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import {skipLogin} from '../../actions/UserAction';
 
-class  Customer extends Component {
+
+
+
+class Customer extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        title:'喵窝',
+        title: '喵窝',
         header: null,
         tabBarIcon: ({tintColor, focused}) => (
             <Ionicons
@@ -35,7 +46,7 @@ class  Customer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { skip } = this.props.UserReducer;
+        const {skip} = this.props.UserReducer;
     }
 
     render() {
@@ -60,19 +71,20 @@ const styles = StyleSheet.create({
         padding: 5,
         textAlignVertical: 'top'
     },
-    logoutBtn:{
+    logoutBtn: {
         flex: 1,
         fontSize: 14,
         padding: 10,
-        borderColor:colors.introduce,
-        borderWidth:1,
-        borderRadius:1,
-        marginLeft:10,
-        marginRight:10,
-        backgroundColor:colors.white,
-        color:colors.appColor,
-        textAlign:'center'
-    }
+        borderColor: colors.introduce,
+        borderWidth: 1,
+        borderRadius: 1,
+        marginLeft: 10,
+        marginRight: 10,
+        backgroundColor: colors.white,
+        color: colors.appColor,
+        textAlign: 'center'
+    },
+
 })
 
 export default connect((state) => {
