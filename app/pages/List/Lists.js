@@ -30,6 +30,7 @@ class Lists extends Component {
     static navigationOptions = ({navigation}) => ({
         title: '喵列表',
         tabBarIcon: ({tintColor, focused}) => (
+
             <Ionicons
                 name={focused ? 'ios-chatboxes' : 'ios-chatboxes-outline'}
                 size={26}
@@ -65,8 +66,8 @@ class Lists extends Component {
             <PullToRefreshListView
                 ref={ (component) => this._pullToRefreshListView = component }
                 viewType={PullToRefreshListView.constants.viewType.listView}
-                contentContainerStyle={{backgroundColor: 'yellow', }}
-                style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
+                //contentContainerStyle={{backgroundColor: 'yellow', }}
+                //style={{marginTop: Platform.OS == 'ios' ? 64 : 56, }}
                 initialListSize={20}
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}

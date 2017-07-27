@@ -5,6 +5,9 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
+    Platform,
+    ScrollView,
+    StatusBar,
     View
 } from 'react-native';
 
@@ -33,7 +36,6 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1,
     },
-
 })
 
 
