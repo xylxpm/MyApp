@@ -33,6 +33,8 @@ import Feedback from './pages/Other/Feedback';
 
 import Splash from './pages/Other/Splash';
 
+import Lists from './pages/List/Lists';
+
 
 const CustomerStack = StackNavigator({
     Customer: {
@@ -69,9 +71,10 @@ export const TabContainer = TabNavigator({
         Category: {
             screen: Category,
         },
-        Feedback: {
-            screen: Feedback,
+        Lists: {
+            screen: Lists,
         },
+
         Customer: {
             screen: CustomerStack,
         }
@@ -129,6 +132,9 @@ export const MyApp = StackNavigator({
     },
     Category_Detail: {
         screen: Category_Detail,
+    },
+    Feedback: {
+        screen: Feedback,
     },
 }, {
     headerMode: 'screen',

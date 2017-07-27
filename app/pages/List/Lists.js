@@ -26,7 +26,7 @@ import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview'
 
 
 
-class Feedback extends Component {
+class Lists extends Component {
     static navigationOptions = ({navigation}) => ({
         title: '喵列表',
         tabBarIcon: ({tintColor, focused}) => (
@@ -172,20 +172,20 @@ class Feedback extends Component {
         //simulate request data
         // this.setTimeout( () => {
 
-            //console.log('outside _onRefresh end...')
-            let addNum = 20
-            let refreshedDataList = []
-            for(let i = 0; i < addNum; i++) {
-                refreshedDataList.push({
-                    text: `item-${i}`
-                })
-            }
-
-            this.setState({
-                dataList: refreshedDataList,
-                dataSource: this._dataSource.cloneWithRows(refreshedDataList),
+        //console.log('outside _onRefresh end...')
+        let addNum = 20
+        let refreshedDataList = []
+        for(let i = 0; i < addNum; i++) {
+            refreshedDataList.push({
+                text: `item-${i}`
             })
-            this._pullToRefreshListView.endRefresh()
+        }
+
+        this.setState({
+            dataList: refreshedDataList,
+            dataSource: this._dataSource.cloneWithRows(refreshedDataList),
+        })
+        this._pullToRefreshListView.endRefresh()
 
         // }, 3000)
     }
@@ -195,34 +195,34 @@ class Feedback extends Component {
 
         // this.setTimeout( () => {
 
-            //console.log('outside _onLoadMore end...')
+        //console.log('outside _onLoadMore end...')
 
-            let length = this.state.dataList.length
-            let addNum = 20
-            let addedDataList = []
-            if(length >= 100) {
-                addNum = 3
-            }
-            for(let i = length; i < length + addNum; i++) {
-                addedDataList.push({
-                    text: `item-${i}`
-                })
-            }
-            let newDataList = this.state.dataList.concat(addedDataList)
-            this.setState({
-                dataList: newDataList,
-                dataSource: this._dataSource.cloneWithRows(newDataList),
+        let length = this.state.dataList.length
+        let addNum = 20
+        let addedDataList = []
+        if(length >= 100) {
+            addNum = 3
+        }
+        for(let i = length; i < length + addNum; i++) {
+            addedDataList.push({
+                text: `item-${i}`
             })
+        }
+        let newDataList = this.state.dataList.concat(addedDataList)
+        this.setState({
+            dataList: newDataList,
+            dataSource: this._dataSource.cloneWithRows(newDataList),
+        })
 
-            let loadedAll
-            if(length >= 100) {
-                loadedAll = true
-                this._pullToRefreshListView.endLoadMore(loadedAll)
-            }
-            else {
-                loadedAll = false
-                this._pullToRefreshListView.endLoadMore(loadedAll)
-            }
+        let loadedAll
+        if(length >= 100) {
+            loadedAll = true
+            this._pullToRefreshListView.endLoadMore(loadedAll)
+        }
+        else {
+            loadedAll = false
+            this._pullToRefreshListView.endLoadMore(loadedAll)
+        }
 
         // }, 3000)
     }
@@ -252,6 +252,7 @@ class Feedback extends Component {
 
 
 }
+
 const styles = StyleSheet.create({
     itemHeader: {
         height: 35,
@@ -298,4 +299,4 @@ export default connect((state) => {
         UserReducer,
         routes
     };
-}, {USER})(Feedback)
+}, {USER})(Lists)
