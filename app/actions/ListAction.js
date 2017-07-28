@@ -2,11 +2,15 @@
  * Created by xylxpm on 2017/7/28.
  */
 import * as ActionTypes from '../constant/ActionTypes'
-import HttpRequest from '../common/'
-const HOST = 'https://m.alibaba.com/products/'
-import Storage from '../common/Storage.js'
-const keyWords = 'bottle'
+import  HttpRequest from '../common/Http'
+
+
+const keyWords = 'bottle';
+
+
+
 export function getProductList (pageNo=1) {
+    let url = `https://m.alibaba.com/products/${keyWords}/${pageNo}.html?XPJAX=1`;
     return dispatch => {
         if (pageNo === 1) {
             dispatch(changeProductListRefreshing(true));
@@ -15,7 +19,7 @@ export function getProductList (pageNo=1) {
         // https://m.alibaba.com/products/tool_boxes/2.html?XPJAX=1
         // https://m.alibaba.com/products/tool_boxes/3.html?XPJAX=1
         // https://m.alibaba.com/products/tool_boxes/4.html?XPJAX=1
-        return HttpRequest(`${HOST}${keyWords}/${pageNo}.html?XPJAX=1`)
+        return HttpRequest(url)
             .then((responseData) => {
                 dispatch(gotProductList(responseData,pageNo,));
                 console.log(`---------> ,成功加载${responseData.productNormalList.length}条数据`, ActionTypes);
@@ -56,28 +60,3 @@ export function changeProductListLoadingMore(argument) {
         value: argument
     }
 }
-
-export function getViewRecords(key) {
-    return dispatch => {
-        Storage.getValueForKey(key).then((record) => {
-                console.log("get record success ,record is :",record);
-                if (record !== null && record !== undefined) {
-                    dispatch(gotViewRecord(record))
-                }else{
-                    dispatch(gotViewRecord([]))
-                }
-            },
-            (error) => {
-                console.log("xxxxxxxxxxxxxxxxxxx ",error);
-                dispatch(gotViewRecord([]))
-            });
-    }
-}
-
-function gotViewRecord(record) {
-    return {
-        type: ActionTypes.GET_VIEW_RECORDS,
-        value: record
-    }
-}
-
