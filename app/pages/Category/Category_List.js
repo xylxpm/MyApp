@@ -10,6 +10,7 @@ import {
     StyleSheet,
     Text,
     Platform,
+    RefreshControl,
     View,
 } from 'react-native';
 
@@ -21,6 +22,8 @@ import colors from '../../baseComponents/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+
+
 
 
 class Category_List extends Component {
@@ -61,6 +64,7 @@ class Category_List extends Component {
                     ref="ListView"
                     style={styles.container}
                     dataSource={ this.state.dataSource }
+
                     renderRow={(rowData) => (
                   <View key={rowData} style={ styles.row }>
                     <Text style={ styles.rowText }>

@@ -1,6 +1,3 @@
-/**
- * Created by Rabbit on 2017/7/1.
- */
 
 const Request = {
     get:(url, successCallBack, failCallBack) =>{

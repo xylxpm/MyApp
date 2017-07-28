@@ -1,8 +1,15 @@
 /**
- * 这里是用户登录的几种状态
+ * 用户登录的几种状态
  */
-
 export const LOGGED_IN ='LOGGED_IN';
 export const LOGGED_OUT ='LOGGED_OUT';
 export const LOGGED_ERROR ='LOGGED_ERROR';
 export const LOGGED_DOING ='LOGGED_DOING';
+/**
+ * 列表的几种状态
+ */
+export const GET_PRODUCT_LIST_SUCC = 'GET_PRODUCT_LIST_SUCC'
+
+export const CHANGE_PRODUCT_LIST_REFRESHING = 'CHANGE_PRODUCT_LIST_REFRESHING'
+
+export const CHANGE_PRODUCT_LIST_LOADINGMORE = 'CHANGE_PRODUCT_LIST_LOADINGMORE'
