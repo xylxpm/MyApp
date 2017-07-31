@@ -4,26 +4,21 @@
 
 import React, {Component} from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    Alert,
-    ScrollView,
+    AppRegistry,
     ListView,
-    Image,
-    ActivityIndicator,
-    ProgressBarAndroid,
-    ActivityIndicatorIOS,
-    Platform,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableHighlight,
+    View
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
 import * as USER from '../../actions/UserAction';
 
-import TimerEnhance from 'react-native-smart-timer-enhance'
-import PullToRefreshListView from 'react-native-smart-pull-to-refresh-listview'
 
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 
 
 class Lists extends Component {
@@ -41,253 +36,212 @@ class Lists extends Component {
     // 构造
     constructor(props) {
         super(props);
-
-        this._dataSource = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2,
-            //sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-        });
-
-        let dataList = []
-
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            first: true,
-            dataList: dataList,
-            dataSource: this._dataSource.cloneWithRows(dataList),
-        }
+            basic: true,
+            listViewData: Array(20).fill('').map((_,i)=>`item #${i}`)
+        };
     }
 
-    componentDidMount () {
-        this._pullToRefreshListView.beginRefresh()
+    deleteRow(secId, rowId, rowMap) {
+        rowMap[`${secId}${rowId}`].closeRow();
+        const newData = [...this.state.listViewData];
+        newData.splice(rowId, 1);
+        this.setState({listViewData: newData});
     }
 
     //Using ListView
     render() {
         return (
-            <PullToRefreshListView
-                ref={ (component) => this._pullToRefreshListView = component }
-                viewType={PullToRefreshListView.constants.viewType.listView}
-                initialListSize={20}
-                enableEmptySections={true}
-                dataSource={this.state.dataSource}
-                pageSize={20}
-                renderRow={this._renderRow}
-                renderHeader={this._renderHeader}
-                renderFooter={this._renderFooter}
-                //renderSeparator={(sectionID, rowID) => <View style={styles.separator} />}
-                onRefresh={this._onRefresh}
-                onLoadMore={this._onLoadMore}
-                pullUpDistance={35}
-                pullUpStayDistance={50}
-                pullDownDistance={35}
-                pullDownStayDistance={50}
-            />
-        )
+            <View style={styles.container}>
 
-    }
-
-    _renderRow = (rowData, sectionID, rowID) => {
-        return (
-            <View style={styles.thumbnail}>
-                <View style={styles.textContainer}>
-                    <Text>{rowData.text}</Text>
+                <View style={styles.standalone}>
+                    <SwipeRow
+                        leftOpenValue={75}
+                        rightOpenValue={-75}
+                    >
+                        <View style={styles.standaloneRowBack}>
+                            <Text style={styles.backTextWhite}>Left</Text>
+                            <Text style={styles.backTextWhite}>Right</Text>
+                        </View>
+                        <View style={styles.standaloneRowFront}>
+                            <Text>I am a standalone SwipeRow</Text>
+                        </View>
+                    </SwipeRow>
                 </View>
+
+                <View style={styles.controls}>
+                    <View style={styles.switchContainer}>
+                        <TouchableOpacity style={[
+							styles.switch,
+							{backgroundColor: this.state.basic ? 'grey' : 'white'}
+						]} onPress={ _ => this.setState({basic: true}) }>
+                            <Text>Basic</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={[
+							styles.switch,
+							{backgroundColor: this.state.basic ? 'white' : 'grey'}
+						]} onPress={ _ => this.setState({basic: false}) }>
+                            <Text>Advanced</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                    {
+                        !this.state.basic &&
+                        <Text>(per row behavior)</Text>
+                    }
+                </View>
+
+                {
+                    this.state.basic &&
+
+                    <SwipeListView
+                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        renderRow={ data => (
+							<TouchableHighlight
+								onPress={ _ => console.log('You touched me') }
+								style={styles.rowFront}
+								underlayColor={'#AAA'}
+							>
+								<View>
+									<Text>I am {data} in a SwipeListView</Text>
+								</View>
+							</TouchableHighlight>
+						)}
+                        renderHiddenRow={ (data, secId, rowId, rowMap) => (
+							<View style={styles.rowBack}>
+								<Text>Left</Text>
+								<View style={[styles.backRightBtn, styles.backRightBtnLeft]}>
+									<Text style={styles.backTextWhite}>Right</Text>
+								</View>
+								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(secId, rowId, rowMap) }>
+									<Text style={styles.backTextWhite}>Delete</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+                        leftOpenValue={75}
+                        rightOpenValue={-150}
+                    />
+                }
+
+                {
+                    !this.state.basic &&
+
+                    <SwipeListView
+                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        renderRow={ (data, secId, rowId, rowMap) => (
+							<SwipeRow
+								disableLeftSwipe={parseInt(rowId) % 2 === 0}
+								leftOpenValue={20 + Math.random() * 150}
+								rightOpenValue={-150}
+							>
+								<View style={styles.rowBack}>
+									<Text>Left</Text>
+									<View style={[styles.backRightBtn, styles.backRightBtnLeft]}>
+										<Text style={styles.backTextWhite}>Right</Text>
+									</View>
+									<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(secId, rowId, rowMap) }>
+										<Text style={styles.backTextWhite}>Delete</Text>
+									</TouchableOpacity>
+								</View>
+								<TouchableHighlight
+									onPress={ _ => console.log('You touched me') }
+									style={styles.rowFront}
+									underlayColor={'#AAA'}
+								>
+									<View>
+										<Text>I am {data} in a SwipeListView</Text>
+									</View>
+								</TouchableHighlight>
+							</SwipeRow>
+						)}
+                    />
+                }
+
             </View>
         )
+
     }
 
-    _renderHeader = (viewState) => {
-        let {pullState, pullDistancePercent} = viewState
-        let {refresh_none, refresh_idle, will_refresh, refreshing,} = PullToRefreshListView.constants.viewState
-        pullDistancePercent = Math.round(pullDistancePercent * 100)
-        switch(pullState) {
-            case refresh_none:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>下拉刷新</Text>
-                    </View>
-                )
-            case refresh_idle:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>下拉刷新：{pullDistancePercent}%</Text>
-                    </View>
-                )
-            case will_refresh:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>下拉度{pullDistancePercent > 100 ? 100 : pullDistancePercent}%</Text>
-                    </View>
-                )
-            case refreshing:
-                return (
-                    <View style={{flexDirection: 'row', height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        {this._renderActivityIndicator()}<Text>刷新ing</Text>
-                    </View>
-                )
-        }
-    }
 
-    _renderFooter = (viewState) => {
-        let {pullState, pullDistancePercent} = viewState
-        let {load_more_none, load_more_idle, will_load_more, loading_more, loaded_all, } = PullToRefreshListView.constants.viewState
-        pullDistancePercent = Math.round(pullDistancePercent * 100)
-        switch(pullState) {
-            case load_more_none:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>上拉加载更多</Text>
-                    </View>
-                )
-            case load_more_idle:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>上拉加载更多{pullDistancePercent}%</Text>
-                    </View>
-                )
-            case will_load_more:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>加载度{pullDistancePercent > 100 ? 100 : pullDistancePercent}%</Text>
-                    </View>
-                )
-            case loading_more:
-                return (
-                    <View style={{flexDirection: 'row', height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        {this._renderActivityIndicator()}<Text>加载ing</Text>
-                    </View>
-                )
-            case loaded_all:
-                return (
-                    <View style={{height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: 'pink',}}>
-                        <Text>没了</Text>
-                    </View>
-                )
-        }
-    }
-
-    _onRefresh = () => {
-        //console.log('outside _onRefresh start...')
-
-        //simulate request data
-        // this.setTimeout( () => {
-
-        //console.log('outside _onRefresh end...')
-        let addNum = 20
-        let refreshedDataList = []
-        for(let i = 0; i < addNum; i++) {
-            refreshedDataList.push({
-                text: `item-${i}`
-            })
-        }
-
-        this.setState({
-            dataList: refreshedDataList,
-            dataSource: this._dataSource.cloneWithRows(refreshedDataList),
-        })
-        this._pullToRefreshListView.endRefresh()
-
-        // }, 3000)
-    }
-
-    _onLoadMore = () => {
-        //console.log('outside _onLoadMore start...')
-
-        // this.setTimeout( () => {
-
-        //console.log('outside _onLoadMore end...')
-
-        let length = this.state.dataList.length
-        let addNum = 20
-        let addedDataList = []
-        if(length >= 100) {
-            addNum = 3
-        }
-        for(let i = length; i < length + addNum; i++) {
-            addedDataList.push({
-                text: `item-${i}`
-            })
-        }
-        let newDataList = this.state.dataList.concat(addedDataList)
-        this.setState({
-            dataList: newDataList,
-            dataSource: this._dataSource.cloneWithRows(newDataList),
-        })
-
-        let loadedAll
-        if(length >= 100) {
-            loadedAll = true
-            this._pullToRefreshListView.endLoadMore(loadedAll)
-        }
-        else {
-            loadedAll = false
-            this._pullToRefreshListView.endLoadMore(loadedAll)
-        }
-
-        // }, 3000)
-    }
-
-    _renderActivityIndicator() {
-        return ActivityIndicator ? (
-            <ActivityIndicator
-                style={{marginRight: 10,}}
-                animating={true}
-                color={'#ff0000'}
-                size={'small'}/>
-        ) : Platform.OS == 'android' ?
-            (
-                <ProgressBarAndroid
-                    style={{marginRight: 10,}}
-                    color={'#ff0000'}
-                    styleAttr={'Small'}/>
-
-            ) :  (
-            <ActivityIndicatorIOS
-                style={{marginRight: 10,}}
-                animating={true}
-                color={'#ff0000'}
-                size={'small'}/>
-        )
-    }
 
 
 }
 
 const styles = StyleSheet.create({
-    itemHeader: {
-        height: 35,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc',
-        backgroundColor: 'blue',
-        overflow: 'hidden',
-        justifyContent: 'center',
+    container: {
+        backgroundColor: 'white',
+        flex: 1
+    },
+    standalone: {
+        marginTop: 30,
+        marginBottom: 30,
+    },
+    standaloneRowFront: {
         alignItems: 'center',
-    },
-    item: {
-        height: 60,
-        //borderBottomWidth: StyleSheet.hairlineWidth,
-        //borderBottomColor: '#ccc',
-        overflow: 'hidden',
+        backgroundColor: '#CCC',
         justifyContent: 'center',
+        height: 50,
+    },
+    standaloneRowBack: {
         alignItems: 'center',
-    },
-
-    contentContainer: {
-        paddingTop: 20 + 44,
-    },
-
-    thumbnail: {
-        padding: 6,
-        flexDirection: 'row',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc',
-        overflow: 'hidden',
-    },
-
-    textContainer: {
-        padding: 20,
+        backgroundColor: '#8BC645',
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 15
+    },
+    backTextWhite: {
+        color: '#FFF'
+    },
+    rowFront: {
         alignItems: 'center',
+        backgroundColor: '#CCC',
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        height: 50,
+    },
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75
+    },
+    backRightBtnLeft: {
+        backgroundColor: 'blue',
+        right: 75
+    },
+    backRightBtnRight: {
+        backgroundColor: 'red',
+        right: 0
+    },
+    controls: {
+        alignItems: 'center',
+        marginBottom: 30
+    },
+    switchContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 5
+    },
+    switch: {
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'black',
+        paddingVertical: 10,
+        width: 100,
     }
 })
 

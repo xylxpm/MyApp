@@ -25,18 +25,12 @@ import {
     changeProductListLoadingMore
 } from '../../actions/ListAction';
 import colors from '../../baseComponents/Colors';
-import Swipeable from 'react-native-swipeable';
+import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 let _pageNo = 1;
 const _pageSize = 30;
 const {width, height} = Dimensions.get('window');
 
-const leftContent = <Text>Pull to activate</Text>;
-
-const rightButtons = [
-    <TouchableHighlight><Text>喜欢</Text></TouchableHighlight>,
-    <TouchableHighlight><Text>不喜欢</Text></TouchableHighlight>
-];
 
 class LoadMoreFooter extends Component {
     constructor(props) {
@@ -55,34 +49,24 @@ class LoadMoreFooter extends Component {
 class ProductCell extends Component {
     constructor(props) {
         super(props);
+        this.state = {};
     }
 
+
     render() {
-        const {rowData, rowID} = this.props;
+        const {rowData, rowID, sectionID} = this.props;
 
         return (
-            <Swipeable
-
-                  rightButtons={[
-                    <TouchableHighlight style={[styles.rightSwipeItem, {backgroundColor: 'lightseagreen'}]}>
-                      <Text>关注</Text>
-                    </TouchableHighlight>,
-                    <TouchableHighlight style={[styles.rightSwipeItem, {backgroundColor: 'red'}]}>
-                      <Text>删除</Text>
-                    </TouchableHighlight>
-                  ]}
-            >
-                <TouchableOpacity activeOpacity={0.7}>
-                    <View style={ styles.cellContiner }>
-                        <Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>
-                        <View style={ styles.textPart }>
-                            <Text style={ styles.productName }
-                                  numberOfLines={2}>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
-                            <Text style={ styles.companyName } numberOfLines={1}>{ rowData.companyName }</Text>
-                        </View>
+            <TouchableHighlight>
+                <View style={ styles.cellContiner }>
+                    <Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>
+                    <View style={ styles.textPart }>
+                        <Text style={ styles.productName }
+                              numberOfLines={2}>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
+                        <Text style={ styles.companyName } numberOfLines={1}>{ rowData.companyName }</Text>
                     </View>
-                </TouchableOpacity>
-            </Swipeable>
+                </View>
+            </TouchableHighlight>
         )
     }
 }
@@ -155,7 +139,7 @@ class Lists extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return (
 
-            <ListView
+            <SwipeListView
                 dataSource={ ds.cloneWithRows(ListReducer.products) }
                 renderRow={ (rowData,SectionId,rowID) => {
 						return <ProductCell rowData={rowData} rowID={ rowID } />
@@ -173,7 +157,20 @@ class Lists extends Component {
 							colors={['#ff0000', '#00ff00', '#0000ff']}
 							title="Loading..."
 							progressBackgroundColor="gray"/>
-						}/>
+						}
+                renderHiddenRow={ (data, secId, rowId, rowMap) => (
+							<View style={styles.rowBack}>
+								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} activeOpacity={0.7}>
+									<Text style={styles.backTextWhite}>标记</Text>
+								</TouchableOpacity>
+								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} activeOpacity={0.7}>
+									<Text style={styles.backTextWhite}>删除</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+                rightOpenValue={-150}
+                disableRightSwipe={true}
+            />
 
         )
     }
@@ -222,13 +219,32 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: 'gray',
     },
-
-    rightSwipeItem: {
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#DDD',
         flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
         justifyContent: 'center',
-        paddingLeft: 20,
-        borderTopWidth: 1,
-        borderTopColor: colors.introduce,
+        position: 'absolute',
+        top: 0,
+        width: 75
+    },
+    backRightBtnLeft: {
+        backgroundColor: colors.introduce,
+        right: 75
+    },
+    backRightBtnRight: {
+        backgroundColor: colors.pink,
+        right: 0
+    },
+    backTextWhite: {
+        color: '#FFF'
     },
 })
 
