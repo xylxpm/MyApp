@@ -23,15 +23,17 @@ import {
     changeProductListRefreshing,
     changeProductListLoadingMore
 } from '../../actions/ListAction';
+import colors from '../../baseComponents/Colors';
 
 let _pageNo = 1;
 const _pageSize = 30;
-const { width, height } = Dimensions.get('window')
+const {width, height} = Dimensions.get('window')
 
 class LoadMoreFooter extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return (
             <View style={styles.footer}>
@@ -47,23 +49,20 @@ class ProductCell extends Component {
     }
 
     render() {
-
-        const {rowData, rowID, goToDetail} = this.props;
+        const {rowData, rowID} = this.props;
         return (
-            //<TouchableOpacity activeOpacity={0.7} onPress={ () => goToDetail(rowData) } >
-            <TouchableOpacity activeOpacity={0.7}  >
+            <TouchableOpacity activeOpacity={0.7}>
                 <View style={ styles.cellContiner }>
-                    {/*<Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>*/}
+                    <Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>
                     <View style={ styles.textPart }>
-                        <Text style={ styles.productName }>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
-                        {/*<Text style={ styles.companyName }>{ rowData.companyName }</Text>*/}
+                        <Text style={ styles.productName } numberOfLines={2}>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
+                        <Text style={ styles.companyName } numberOfLines={1}>{ rowData.companyName }</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         )
     }
 }
-
 
 
 class Lists extends Component {
@@ -77,15 +76,17 @@ class Lists extends Component {
             />
         ),
     })
+
     constructor(props) {
         super(props);
     }
+
     _onRefresh() {
         this.props.getProductList(1);
     }
 
     _loadMoreData() {
-        const  ListReducer  = this.props.ListReducer;
+        const ListReducer = this.props.ListReducer;
         this.props.changeProductListLoadingMore(true);
         _pageNo = parseInt(ListReducer.products.length / _pageSize) + 1;
         this.props.getProductList(_pageNo);
@@ -93,26 +94,29 @@ class Lists extends Component {
 
     _toEnd() {
         const ListReducer = this.props.ListReducer;
-       // console.log("加载更多？ ",userReducer.isLoadingMore, userReducer.products.length, userReducer.totalProductCount,userReducer.isRefreshing);
+        // console.log("加载更多？ ",userReducer.isLoadingMore, userReducer.products.length, userReducer.totalProductCount,userReducer.isRefreshing);
         //ListView滚动到底部，根据是否正在加载更多 是否正在刷新 是否已加载全部来判断是否执行加载更多
         if (ListReducer.isLoadingMore || ListReducer.products.length >= ListReducer.totalProductCount || ListReducer.isRefreshing) {
             return;
-        };
+        }
+        ;
         InteractionManager.runAfterInteractions(() => {
             console.log("触发加载更多 toEnd() --> ");
             this._loadMoreData();
         });
     }
+
     _renderFooter() {
-        const  ListReducer  = this.props.ListReducer;
+        const ListReducer = this.props.ListReducer;
         //通过当前product数量和刷新状态（是否正在下拉刷新）来判断footer的显示
         if (ListReducer.products.length < 1 || ListReducer.isRefreshing) {
             return null
-        };
+        }
+        ;
         if (ListReducer.products.length < ListReducer.totalProductCount) {
             //还有更多，默认显示‘正在加载更多...’
             return <LoadMoreFooter />
-        }else{
+        } else {
             // 加载全部
             console.log(ListReducer.isLoadingMore);
             return <LoadMoreFooter isLoadAll={true}/>
@@ -124,26 +128,27 @@ class Lists extends Component {
     }
 
     render() {
-        const  ListReducer  = this.props.ListReducer;
+        const ListReducer = this.props.ListReducer;
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return (
 
-                <ListView
-                          dataSource={ ds.cloneWithRows(ListReducer.products) }
-                          renderRow={ (rowData,SectionId,rowID) => {
+            <ListView
+                dataSource={ ds.cloneWithRows(ListReducer.products) }
+                renderRow={ (rowData,SectionId,rowID) => {
 						return <ProductCell rowData={rowData} rowID={ rowID } />
 					} }
 
-                          onEndReached={ this._toEnd.bind(this) }
-                          onEndReachedThreshold={10}
-                          renderFooter={ this._renderFooter.bind(this) }
-                          enableEmptySections={true}
-                          refreshControl={
+                onEndReached={ this._toEnd.bind(this) }
+                onEndReachedThreshold={10}
+                renderFooter={ this._renderFooter.bind(this) }
+                enableEmptySections={true}
+                refreshControl={
 						<RefreshControl
 							refreshing={ ListReducer.isRefreshing }
 							onRefresh={ this._onRefresh.bind(this) }
 							tintColor="gray"
 							colors={['#ff0000', '#00ff00', '#0000ff']}
+							title="Loading..."
 							progressBackgroundColor="gray"/>
 						}/>
 
@@ -153,12 +158,13 @@ class Lists extends Component {
 }
 
 const styles = StyleSheet.create({
-
     footer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         height: 40,
+        borderTopWidth: 1,
+        borderTopColor: colors.tintColor,
     },
     footerTitle: {
         marginLeft: 10,
@@ -166,38 +172,33 @@ const styles = StyleSheet.create({
         color: 'gray'
     },
     cellContiner: {
+        height: 90,
         flex: 1,
         flexDirection: 'row',
-        marginTop: 5,
-        marginBottom: 5,
         borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderTopColor: '#EEE9E9',
-        borderBottomColor: '#EEE9E9',
-        backgroundColor: 'white',
+        borderTopColor: colors.introduce,
         alignItems: 'center',
+        backgroundColor:colors.white
+    },
+    productName: {
+        fontSize: 14,
+        color: 'black',
     },
     image: {
         width: 90,
-        height: 90,
-        marginLeft: 8,
+        height: 55,
+        marginLeft: 10,
+        borderRadius:4
     },
     textPart: {
-        marginLeft: 8,
-        marginTop: 8,
-        width: width - 90 - 24,
-    },
-    productName: {
-        fontWeight: 'bold',
-        fontSize: 16.0,
-        color: 'black',
+        marginLeft: 10,
+        width: width - 90 - 30,
     },
     companyName: {
-        marginTop: 8,
-        fontSize: 14.0,
+        marginTop: 4,
+        fontSize: 12,
         color: 'gray',
     },
-
 })
 
 export default connect((state) => {
@@ -207,4 +208,4 @@ export default connect((state) => {
         ListReducer,
         routes
     };
-}, {getProductList,changeProductListRefreshing,changeProductListLoadingMore})(Lists)
+}, {getProductList, changeProductListRefreshing, changeProductListLoadingMore})(Lists)
