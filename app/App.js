@@ -81,6 +81,7 @@ export const TabContainer = TabNavigator({
     },
     {
         lazy: true,
+        swipeEnabled: false,
         tabBarOptions: {
             animationEnabled: false,
             activeTintColor: colors.appColor,
@@ -91,7 +92,6 @@ export const TabContainer = TabNavigator({
             activeBackgroundColor: colors.white,
             inactiveBackgroundColor: colors.white,
             inactiveTintColor: colors.tintColor,
-            swipeEnabled: true,
             showIcon: true,
             indicatorStyle: {
                 height: 0,

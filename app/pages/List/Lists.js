@@ -8,6 +8,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
+    TouchableHighlight,
     Dimensions,
     ListView,
     InteractionManager,
@@ -24,10 +25,18 @@ import {
     changeProductListLoadingMore
 } from '../../actions/ListAction';
 import colors from '../../baseComponents/Colors';
+import Swipeable from 'react-native-swipeable';
 
 let _pageNo = 1;
 const _pageSize = 30;
-const {width, height} = Dimensions.get('window')
+const {width, height} = Dimensions.get('window');
+
+const leftContent = <Text>Pull to activate</Text>;
+
+const rightButtons = [
+    <TouchableHighlight><Text>喜欢</Text></TouchableHighlight>,
+    <TouchableHighlight><Text>不喜欢</Text></TouchableHighlight>
+];
 
 class LoadMoreFooter extends Component {
     constructor(props) {
@@ -50,16 +59,30 @@ class ProductCell extends Component {
 
     render() {
         const {rowData, rowID} = this.props;
+
         return (
-            <TouchableOpacity activeOpacity={0.7}>
-                <View style={ styles.cellContiner }>
-                    <Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>
-                    <View style={ styles.textPart }>
-                        <Text style={ styles.productName } numberOfLines={2}>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
-                        <Text style={ styles.companyName } numberOfLines={1}>{ rowData.companyName }</Text>
+            <Swipeable
+
+                  rightButtons={[
+                    <TouchableHighlight style={[styles.rightSwipeItem, {backgroundColor: 'lightseagreen'}]}>
+                      <Text>关注</Text>
+                    </TouchableHighlight>,
+                    <TouchableHighlight style={[styles.rightSwipeItem, {backgroundColor: 'red'}]}>
+                      <Text>删除</Text>
+                    </TouchableHighlight>
+                  ]}
+            >
+                <TouchableOpacity activeOpacity={0.7}>
+                    <View style={ styles.cellContiner }>
+                        <Image style={ styles.image } source={{uri: `https:${rowData.imagePath}`}}/>
+                        <View style={ styles.textPart }>
+                            <Text style={ styles.productName }
+                                  numberOfLines={2}>({ rowID - 0 + 1 }).{ rowData.productName }</Text>
+                            <Text style={ styles.companyName } numberOfLines={1}>{ rowData.companyName }</Text>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Swipeable>
         )
     }
 }
@@ -178,7 +201,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: colors.introduce,
         alignItems: 'center',
-        backgroundColor:colors.white
+        backgroundColor: colors.white
     },
     productName: {
         fontSize: 14,
@@ -188,7 +211,7 @@ const styles = StyleSheet.create({
         width: 90,
         height: 55,
         marginLeft: 10,
-        borderRadius:4
+        borderRadius: 4
     },
     textPart: {
         marginLeft: 10,
@@ -198,6 +221,14 @@ const styles = StyleSheet.create({
         marginTop: 4,
         fontSize: 12,
         color: 'gray',
+    },
+
+    rightSwipeItem: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingLeft: 20,
+        borderTopWidth: 1,
+        borderTopColor: colors.introduce,
     },
 })
 
