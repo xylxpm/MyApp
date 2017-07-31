@@ -170,6 +170,9 @@ class Lists extends Component {
 						)}
                 rightOpenValue={-150}
                 disableRightSwipe={true}
+
+                closeOnScroll={true}
+                closeOnRowBeginSwipe={true}
             />
 
         )
