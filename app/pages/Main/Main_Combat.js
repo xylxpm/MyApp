@@ -15,7 +15,14 @@ import {
 
 const dataSource = [
     {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'A'},
-    {data:[{name:'nick'},{name:'amanda'}],key:'B'}
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'B'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'C'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'D'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'E'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'F'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'G'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'H'},
+    {data:[{name:'nader0'},{name:'chris0'},{name:'nader1'},{name:'chris2'},{name:'nader3'},{name:'chris4'},{name:'nader5'},{name:'chris'}],key:'K'}
 ];
 
 class Main_Combat extends Component{
@@ -50,18 +57,12 @@ class Main_Combat extends Component{
         return(
             <View style={styles.container}>
                 <SectionList
-                    ListHeaderComponent = {() => this._renderTableHeader()}
+
                     renderItem={this.renderItem}
                     renderSectionHeader={this.renderHeader}
                     sections={dataSource}
                     keyExtractor={(item)=>item.name}
-                    ListFooterComponent={()=>{
-                        return( this.state.isRefresh &&
-                            <ActivityIndicator
-                                style={styles.loadDataStyle}
-                            />
-                        )
-                    }}
+
                 />
             </View>
         )

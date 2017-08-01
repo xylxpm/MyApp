@@ -171,9 +171,12 @@ class Main_Path extends Component {
 
     render() {
         return (
-            <View style={styles.flex}>
-                <LeftFlatList data={linkageData}/>
-                <RightSectionList data={linkageData}/>
+            <View style={{flex:1}}>
+                <Text>这是一个左右联动的Flatlist和SectionList，修改了部分源码，见readme文件</Text>
+                <View style={styles.flex}>
+                    <LeftFlatList data={linkageData}/>
+                    <RightSectionList data={linkageData}/>
+                </View>
             </View>
         )
     }
