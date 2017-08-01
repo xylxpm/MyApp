@@ -63,37 +63,62 @@ class MyOperation extends Component {
                         </View>
                     </View>
 
-                    <View style={[styles.flexDRow]}>
-                        <Ionicons
-                            name={'ios-paw-outline'}
-                            size={26}
-                            style={{ color: colors.green,}}
-                        />
-                        <View style={[styles.rowRight]}>
-                            <Text style={{flex:1}}>我的课表</Text>
-                            <Ionicons
-                                name={'ios-arrow-forward'}
-                                size={26}
-                                style={styles.crrroght}
-                            />
-                        </View>
-                    </View>
 
-                    <View style={[styles.flexDRow]}>
-                        <Ionicons
-                            name={'ios-ribbon-outline'}
-                            size={26}
-                            style={{ color: colors.pink,}}
-                        />
-                        <View style={[styles.rowRight,styles.nob]}>
-                            <Text style={{flex:1}}>我的订单</Text>
+                    { UserReducer.isLoggedIn ?
+
+                        <View style={[styles.flexDRow]}>
                             <Ionicons
-                                name={'ios-arrow-forward'}
+                                name={'ios-paw-outline'}
                                 size={26}
-                                style={styles.crrroght}
+                                style={{ color: colors.green,}}
                             />
+                            <View style={[styles.rowRight]}>
+                                <Text style={{flex:1}}>我的课表</Text>
+                                <Ionicons
+                                    name={'ios-arrow-forward'}
+                                    size={26}
+                                    style={styles.crrroght}
+                                />
+                            </View>
                         </View>
-                    </View>
+
+                        :
+                        <View style={[styles.flexDRow]}>
+                            <Ionicons
+                                name={'ios-paw-outline'}
+                                size={26}
+                                style={{ color: colors.green,}}
+                            />
+                            <View style={[styles.rowRight,styles.nob]}>
+                                <Text style={{flex:1}}>我的课表</Text>
+                                <Ionicons
+                                    name={'ios-arrow-forward'}
+                                    size={26}
+                                    style={styles.crrroght}
+                                />
+                            </View>
+                        </View>
+
+                    }
+
+
+                    { UserReducer.isLoggedIn ?
+                        <View style={[styles.flexDRow]}>
+                            <Ionicons
+                                name={'ios-ribbon-outline'}
+                                size={26}
+                                style={{ color: colors.pink,}}
+                            />
+                            <View style={[styles.rowRight,styles.nob]}>
+                                <Text style={{flex:1}}>我的订单</Text>
+                                <Ionicons
+                                    name={'ios-arrow-forward'}
+                                    size={26}
+                                    style={styles.crrroght}
+                                />
+                            </View>
+                        </View>
+                        : null}
                 </View>
 
                 <View style={[styles.flexb,styles.mb]}>
@@ -117,7 +142,7 @@ class MyOperation extends Component {
                             style={{ color: colors.green,}}
                         />
                         <View style={[styles.rowRight,styles.nob]}>
-                            <Text style={{flex:1}} >系统设置</Text>
+                            <Text style={{flex:1}}>系统设置</Text>
 
                             <Ionicons
                                 name={'ios-arrow-forward'}
@@ -132,7 +157,7 @@ class MyOperation extends Component {
 
                 { UserReducer.isLoggedIn ?
                     <TouchableOpacity activeOpacity={0.9} onPress={()=>{this.props.logOut()}}>
-                        <Text style={styles.logoutBtn} >退出登录</Text>
+                        <Text style={styles.logoutBtn}>退出登录</Text>
                     </TouchableOpacity>
                     : null}
 

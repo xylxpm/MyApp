@@ -1,5 +1,6 @@
 仿mooc和iread两个app，先从ui，文件结构开始，找到合适的组件
 
+
 baseomponents 基础组件（按钮，字体图标之类）
 components  组件（本项目用的）
 pages  页面
@@ -16,3 +17,10 @@ utils  工具 （格式化字符串之类的基础工具）
 7、启动页
 8、打开app，判断登陆状态
 9、网络请求   get一半
+
+
+******************************
+node_modules/react-native/Libraries/Lists/SectionList.js
+node_modules/react-native/Libraries/Lists/VirtualizedSectionList.js
+
+这两个文件修改过，原始文件放在RN_projects----edited-code文件夹
