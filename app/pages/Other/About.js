@@ -10,7 +10,7 @@ import {
 class  About extends Component {
 
     static navigationOptions = ({navigation}) => ({
-        title:'关于'
+        title:'关于',
     })
 
     constructor(props) {

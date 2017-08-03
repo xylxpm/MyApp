@@ -159,6 +159,11 @@ class Category extends Component {
                 style={{ color: tintColor }}
             />
         ),
+        headerLeft: (<Ionicons
+            name={'ios-search'}
+            size={26}
+            style={{ color: colors.white,marginLeft:10 }}
+        />),
     })
 
     constructor(props) {

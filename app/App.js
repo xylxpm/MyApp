@@ -2,10 +2,11 @@
  * 入口
  */
 import React, {Component} from 'react';
-import {Platform} from 'react-native';
+import {Platform, ScrollView, View, Text} from 'react-native';
 import {
     StackNavigator,
     TabNavigator,
+    DrawerNavigator,
     addNavigationHelpers
 } from 'react-navigation';
 import {connect} from 'react-redux';
@@ -30,6 +31,7 @@ import Category_Detail from './pages/Category/Category_Detail';
 import Customer from './pages/Customer/Customer';
 
 import Feedback from './pages/Other/Feedback';
+import About from './pages/Other/About';
 
 import Splash from './pages/Other/Splash';
 
@@ -51,7 +53,7 @@ const MainStack = StackNavigator({
     Main: {
         screen: Main,
         navigationOptions: {
-            header:null
+            header: null
         }
     },
     Login: {
@@ -60,8 +62,6 @@ const MainStack = StackNavigator({
 }, {
     mode: 'modal',
 });
-
-
 
 
 export const TabContainer = TabNavigator({
@@ -104,6 +104,54 @@ export const TabContainer = TabNavigator({
     }
 );
 
+// const MyFirstProject = DrawerNavigator({
+//     About: {
+//         screen: About,
+//
+//     },
+//     Home: {
+//         screen: TabContainer,
+//
+//     },
+//
+// }, {
+//     drawerWidth: 200, // 抽屉宽
+//     drawerPosition: 'right', // 抽屉在左边还是右边
+//     // contentComponent: CustomDrawerContentComponent,  // 自定义抽屉组件
+//     contentOptions: {
+//         initialRouteName: 'Home', // 默认页面组件
+//         activeItemKey: 'Notifications',
+//         labelStyle: {//标签样式
+//             // color : 'red',
+//             height: 30,
+//         },
+//         activeTintColor: 'white',  // 选中文字颜色
+//         activeBackgroundColor: '#ff8500', // 选中背景颜色
+//         inactiveTintColor: '#666',  // 未选中文字颜色
+//         inactiveBackgroundColor: '#fff', // 未选中背景颜色
+//         style: {  // 样式
+//             marginVertical: 0,
+//         },
+//         //没有作用
+//         onItemPress: (route) => {
+//             console.log('-------->' + JSON.stringify(route))
+//         },
+//
+//     },
+//
+//     contentComponent: props => {
+//         return (
+//             <ScrollView>
+//                 <View>
+//                     <View style={{paddingVertical: 20, paddingHorizontal: 15, backgroundColor:'#000'}}>
+//                         <Text style={{color:'#FFF'}}>ser Name</Text>
+//                     </View>
+//                 </View>
+//             </ScrollView>
+//         )
+//     },
+// });
+
 
 export const MyApp = StackNavigator({
     Home: {
@@ -138,6 +186,7 @@ export const MyApp = StackNavigator({
     },
 }, {
     headerMode: 'screen',
+
     navigationOptions: {
         headerBackTitle: null,
         headerStyle: {
@@ -153,6 +202,7 @@ export const MyApp = StackNavigator({
         headerTintColor: colors.white
     }
 });
+
 
 const AppWithNavigationState = ({dispatch, nav}) => (
     <MyApp navigation={addNavigationHelpers({ dispatch, state: nav })}/>
