@@ -10,6 +10,7 @@ import {
     Alert,
     Dimensions,
     ScrollView,
+    NativeModules,
     Image
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -63,6 +64,17 @@ class Main extends Component {
         // }
     }
 
+
+
+
+    handleAndroidMessage=(msg)=>{
+        console.log(msg);
+    }
+
+
+    call_button(){
+        NativeModules.cookiecat.getTime();
+    }
     render() {
         return (
 
@@ -78,8 +90,10 @@ class Main extends Component {
                                    onPress={() => this.props.navigation.navigate('Main_Questions')}></MyMenuBtn>
                         <MyMenuBtn title="手记" icon="ios-bonfire"
                                    onPress={() => this.props.navigation.navigate('Main_Notes')}></MyMenuBtn>
+                        {/*<MyMenuBtn title="发现" icon="ios-megaphone"*/}
+                                   {/*onPress={() => this.props.navigation.navigate('Main_Discover')}></MyMenuBtn>*/}
                         <MyMenuBtn title="发现" icon="ios-megaphone"
-                                   onPress={() => this.props.navigation.navigate('Main_Discover')}></MyMenuBtn>
+                                   onPress={this.call_button.bind(this)} ></MyMenuBtn>
                     </View>
                     <MyCardList></MyCardList>
                     <MyHorCardList></MyHorCardList>
