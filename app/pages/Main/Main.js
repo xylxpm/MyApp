@@ -11,7 +11,8 @@ import {
     Dimensions,
     ScrollView,
     NativeModules,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -73,7 +74,12 @@ class Main extends Component {
 
 
     call_button(){
-        NativeModules.cookiecat.getTime();
+        if(Platform.OS === 'ios' ){
+            alert('ios')
+        }else{
+            NativeModules.cookiecat.getTime();
+        }
+
     }
     render() {
         return (

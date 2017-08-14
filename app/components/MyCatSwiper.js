@@ -114,8 +114,8 @@ class MyCatSwiper extends Component {
                     sliderWidth={sliderWidth}
                     itemWidth={itemWidth}
                     firstItem={1}
-                    inactiveSlideScale={1}
-                    inactiveSlideOpacity={1}
+                    inactiveSlideScale={0.8}
+                    inactiveSlideOpacity={0.7}
                     enableMomentum={false}
                     containerCustomStyle={styles.slider}
                     contentContainerCustomStyle={styles.sliderContainer}
