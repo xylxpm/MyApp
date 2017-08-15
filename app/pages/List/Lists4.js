@@ -139,54 +139,11 @@ class Lists extends Component {
         this.props.getProductList(_pageNo, this.state.keyWords);
     }
 
-    renderContent(dataSource, keyWords) {
-        const ListReducer = this.props.ListReducer;
-        console.log(ListReducer.products.length);
-        return
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        return(
-            <SwipeListView
-                dataSource={ ds.cloneWithRows(ListReducer.products) }
-                renderRow={ (rowData,SectionId,rowID) => {
-						return <ProductCell rowData={rowData} rowID={ rowID } />
-					} }
 
-                onEndReached={ () => this._toEnd.bind(keyWords) }
-                onEndReachedThreshold={10}
-                renderFooter={ () =>this._renderFooter.bind(keyWords) }
-                enableEmptySections={true}
-                refreshControl={
-						<RefreshControl
-							refreshing={ ListReducer.isRefreshing }
-							onRefresh={ () =>this._onRefresh.bind(keyWords) }
-							tintColor="gray"
-							colors={['#ff0000', '#00ff00', '#0000ff']}
-							title="Loading..."
-							progressBackgroundColor="gray"/>
-						}
-                renderHiddenRow={ (data, secId, rowId, rowMap) => (
-							<View style={styles.rowBack}>
-								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} activeOpacity={0.7}>
-									<Text style={styles.backTextWhite}>标记</Text>
-								</TouchableOpacity>
-								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} activeOpacity={0.7}>
-									<Text style={styles.backTextWhite}>删除</Text>
-								</TouchableOpacity>
-							</View>
-						)}
-                rightOpenValue={-150}
-                disableRightSwipe={true}
-
-                closeOnScroll={true}
-                closeOnRowBeginSwipe={true}
-            />
-        )
-
-    }
 
     render() {
-        // const ListReducer = this.props.ListReducer;
-        // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const ListReducer = this.props.ListReducer;
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return (
 
             <ScrollableTabView
@@ -199,26 +156,61 @@ class Lists extends Component {
                 (obj)=>{
 
                  this.setState({
-                  keyWords:obj.ref.props.tabLabel
+                  keyWords:'cat'
                   })
-
-                 //console.log(this.props.getProductList(1,this.state.keyWords))
+                 this.props.getProductList(1,this.state.keyWords);
                 }
               }
                 tabBarBackgroundColor={'#ffffff'}
                 tabBarTextStyle={{color:'#888888'}}
 
             >
-                {this.state.tabName.map((keyWords) => {
+                <View tabLabel="BOTTLE" style={styles.content}>
+                    <SwipeListView
+                        dataSource={ ds.cloneWithRows(ListReducer.products) }
+                        renderRow={ (rowData,SectionId,rowID) => {
+						return <ProductCell rowData={rowData} rowID={ rowID } />
+					} }
 
-                    const typeView = (
-                        <View key={keyWords} tabLabel={keyWords} style={styles.base}>
-                            {/*<Text>{keyWords}</Text>*/}
-                            {/*{this.renderContent( this.props.getProductList(1,keyWords), keyWords )}*/}
-                        </View>
-                    );
-                    return typeView;
-                })}
+                        onEndReached={ this._toEnd.bind(this) }
+                        onEndReachedThreshold={10}
+                        renderFooter={ this._renderFooter.bind(this) }
+                        enableEmptySections={true}
+                        refreshControl={
+						<RefreshControl
+							refreshing={ ListReducer.isRefreshing }
+							onRefresh={ this._onRefresh.bind(this) }
+							tintColor="gray"
+							colors={['#ff0000', '#00ff00', '#0000ff']}
+							title="Loading..."
+							progressBackgroundColor="gray"/>
+						}
+                        renderHiddenRow={ (data, secId, rowId, rowMap) => (
+							<View style={styles.rowBack}>
+								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} activeOpacity={0.7}>
+									<Text style={styles.backTextWhite}>标记</Text>
+								</TouchableOpacity>
+								<TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} activeOpacity={0.7}>
+									<Text style={styles.backTextWhite}>删除</Text>
+								</TouchableOpacity>
+							</View>
+						)}
+                        rightOpenValue={-150}
+                        disableRightSwipe={true}
+
+                        closeOnScroll={true}
+                        closeOnRowBeginSwipe={true}
+                    />
+                </View>
+                <View tabLabel="CAT" style={styles.center}>
+                    <Text >基础</Text>
+                </View>
+                <View tabLabel="DOG" style={styles.center}>
+                    <Text >案例</Text>
+                </View>
+                <View tabLabel="PC" style={styles.center}>
+                    <Text >框架</Text>
+                </View>
 
             </ScrollableTabView>
 

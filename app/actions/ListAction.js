@@ -9,7 +9,7 @@ const keyWords = 'bottle';
 
 
 
-export function getProductList (pageNo=1) {
+export function getProductList (pageNo=1,keyWords='dog') {
     let url = `https://m.alibaba.com/products/${keyWords}/${pageNo}.html?XPJAX=1`;
     return dispatch => {
         if (pageNo === 1) {
