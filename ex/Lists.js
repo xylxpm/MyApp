@@ -26,6 +26,7 @@ import {
 } from '../../actions/ListAction';
 import colors from '../../baseComponents/Colors';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
+import ScrollableTabView, {DefaultTabBar, ScrollableTabBar} from 'react-native-scrollable-tab-view';
 
 let _pageNo = 1;
 const _pageSize = 30;
@@ -86,17 +87,21 @@ class Lists extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            keyWords: 'bottle',
+            tabName:['bottle', 'cat', 'dog', 'pc'],
+        }
     }
 
     _onRefresh() {
-        this.props.getProductList(1);
+        this.props.getProductList(1, this.state.keyWords);
     }
 
     _loadMoreData() {
         const ListReducer = this.props.ListReducer;
         this.props.changeProductListLoadingMore(true);
         _pageNo = parseInt(ListReducer.products.length / _pageSize) + 1;
-        this.props.getProductList(_pageNo);
+        this.props.getProductList(_pageNo, this.state.keyWords);
     }
 
     _toEnd() {
@@ -131,28 +136,31 @@ class Lists extends Component {
     }
 
     componentDidMount() {
-        this.props.getProductList(_pageNo);
+        this.props.getProductList(_pageNo, this.state.keyWords);
     }
 
-    render() {
+    renderContent(keyWords) {
+       // this._onRefresh.bind(keyWords);
+      //  console.log(keyWords);
         const ListReducer = this.props.ListReducer;
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        return (
 
+       // return
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        return(
             <SwipeListView
-                dataSource={ ds.cloneWithRows(ListReducer.products) }
+                dataSource={ds.cloneWithRows(ListReducer.products) }
                 renderRow={ (rowData,SectionId,rowID) => {
 						return <ProductCell rowData={rowData} rowID={ rowID } />
 					} }
 
-                onEndReached={ this._toEnd.bind(this) }
+                onEndReached={ () => this._toEnd.bind(keyWords) }
                 onEndReachedThreshold={10}
-                renderFooter={ this._renderFooter.bind(this) }
+                renderFooter={ () =>this._renderFooter.bind(keyWords) }
                 enableEmptySections={true}
                 refreshControl={
 						<RefreshControl
 							refreshing={ ListReducer.isRefreshing }
-							onRefresh={ this._onRefresh.bind(this) }
+							onRefresh={ () =>this._onRefresh.bind(keyWords) }
 							tintColor="gray"
 							colors={['#ff0000', '#00ff00', '#0000ff']}
 							title="Loading..."
@@ -174,6 +182,49 @@ class Lists extends Component {
                 closeOnScroll={true}
                 closeOnRowBeginSwipe={true}
             />
+        )
+
+    }
+
+    render() {
+        // const ListReducer = this.props.ListReducer;
+        // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        return (
+
+            <ScrollableTabView
+                renderTabBar={() => <ScrollableTabBar/>}
+                tabBarPosition='overlayTop'
+                tabBarUnderlineStyle={{
+                    backgroundColor:'#888888'
+                }}
+                onChangeTab={
+                (obj)=>{
+
+                 this.setState({
+                  keyWords:obj.ref.props.tabLabel
+                  })
+
+                 //console.log(this.props.getProductList(1,this.state.keyWords))
+                }
+              }
+                tabBarBackgroundColor={'#ffffff'}
+                tabBarTextStyle={{color:'#888888'}}
+
+            >
+                {this.state.tabName.map((keyWords) => {
+
+                    const typeView = (
+                        <View key={keyWords} tabLabel={keyWords} style={styles.content}>
+                            {/*<Text>{keyWords}</Text>*/}
+                            {this.renderContent(  keyWords )}
+                        </View>
+                    );
+                    return typeView;
+                })}
+
+            </ScrollableTabView>
+
+
 
         )
     }
@@ -249,6 +300,9 @@ const styles = StyleSheet.create({
     backTextWhite: {
         color: '#FFF'
     },
+    content: {
+        marginTop: 49
+    }
 })
 
 export default connect((state) => {

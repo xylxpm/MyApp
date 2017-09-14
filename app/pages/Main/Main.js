@@ -75,7 +75,7 @@ class Main extends Component {
 
     call_button(){
         if(Platform.OS === 'ios' ){
-            alert('ios')
+            alert('这里是ios系统')
         }else{
             NativeModules.cookiecat.getTime();
         }

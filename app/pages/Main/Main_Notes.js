@@ -19,7 +19,7 @@ class Main_Notes extends Component{
     render(){
         return(
             <View style={styles.flex}>
-                <Text>手记</Text>
+                <Text>react-native-fs实例</Text>
             </View>
         )
     }
