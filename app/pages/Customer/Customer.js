@@ -41,7 +41,6 @@ class Customer extends Component {
     })
 
     constructor(props) {
-
         super(props);
     }
 

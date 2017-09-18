@@ -13,8 +13,8 @@ import {
 import RNFS from 'react-native-fs';
 
 
-let downloadUrl = 'http://www.reactnative.vip/img/reactnative.png';
-let downloadUrl_big_file = 'http://www.reactnative.vip/data/dongfang.apk';
+let downloadUrl = 'http://img.mp.itc.cn/upload/20160511/75173ff5bd664ea58d08b85e55294155_th.jpg';
+let downloadUrl_big_file = 'https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=072980f9df2a6059461de948495d5ffe/4034970a304e251fc3ec88c8af86c9177f3e53e2.jpg';
 let jobId1 = -1;
 let testImage1Path = RNFS.PicturesDirectoryPath + '/test-image-11.png';
 
@@ -35,7 +35,7 @@ class Main_Notes extends Component {
                 <TouchableOpacity onPress={this.createFile}><Text style={styles.btn}>创建文件</Text></TouchableOpacity>
                 <TouchableOpacity onPress={this.delFile}><Text style={styles.btn}>删除文件</Text></TouchableOpacity>
                 <TouchableOpacity onPress={this.printPath}><Text style={styles.btn}>输出各种路径</Text></TouchableOpacity>
-                <TouchableOpacity onPress={this.downloadFile.bind(this, true, downloadUrl_big_file) }><Text
+                <TouchableOpacity onPress={this.downloadFilemy.bind(this,true, downloadUrl_big_file) }><Text
                     style={styles.btn}>下载文件</Text></TouchableOpacity>
                 <TouchableOpacity onPress={this.stopDownload}><Text style={styles.btn}>停止下载</Text></TouchableOpacity>
                 <TouchableOpacity onPress={this.getFileInfo}><Text style={styles.btn}>获取文件大小信息</Text></TouchableOpacity>
@@ -73,7 +73,6 @@ class Main_Notes extends Component {
             })
         })
     }
-
 
     createFile = () => {
         let path = RNFS.PicturesDirectoryPath + '/text.txt';
@@ -115,7 +114,11 @@ class Main_Notes extends Component {
     }
 
     stopDownload = () => {
-        RNFS.stopDownload(jobId1);
+        if (jobId1 !== -1) {
+            RNFS.stopDownload(jobId1);
+        } else {
+            this.setState({ output: 'There is no download to stop' });
+        }
     }
 
     getFileInfo = () => {
@@ -125,19 +128,72 @@ class Main_Notes extends Component {
     }
 
     uploadFile = () => {
+        var uploadUrl = 'http://requestb.in/1mhbfei1';
+        var filelists=[
+            {
+                name: 'test1',
+                filename: 'test1.w4a',
+                filepath: RNFS.PicturesDirectoryPath + '/test1.w4a',
+                filetype: 'audio/x-m4a'
+            }, {
+                name: 'test2',
+                filename: 'test2.w4a',
+                filepath: RNFS.PicturesDirectoryPath + '/test2.w4a',
+                filetype: 'audio/x-m4a'
+            }
+        ];
+
+        var uploadBegin = (response) =>{
+            var jobId = response.jobId;
+            console.log('上传开始! JobId: ' + jobId);
+        }
+
+        var uploadProgress = (response) =>{
+            var percentage = Math.floor((response.totalBytesSent/response.totalBytesExpectedToSend)*100);
+            console.log('已经上传'+percentage+'%');
+        }
+
+        RNFS.uploadFiles({
+            toUrl:uploadUrl,
+            files:filelists,
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+            },
+            fields: {
+                'hello': 'world',
+            },
+            begin:uploadBegin,
+            progress:uploadProgress
+        }).promise.then((response) => {
+            if (response.statusCode == 200) {
+                this.setState({output: 'FILES UPLOADED!'});
+            } else {
+                this.setState({output: 'SERVER ERROR'});
+            }
+        }).catch((err) => {
+            if (err.description === "cancelled") {
+
+            }
+            this.setState({output: err});
+        });
+
 
     }
 
 
     stopUpload = () => {
-
+        RNFS.stopUpload(jobId1);
     }
 
-    downloadFile(background, url) {
+    downloadFilemy(background, url) {
+        console.log(background);
+        console.log(url);
+
         var progress = data => {
             var percentage = ((100 * data.bytesWritten) / data.contentLength) | 0;
             var text = `进度 ${percentage}%`;
-            this.setState({ output: text });
+            this.setState({output: text});
         };
 
         var begin = res => {
@@ -147,11 +203,16 @@ class Main_Notes extends Component {
         var progressDivider = 1;
 
 
-        RNFS.downloadFile({ fromUrl: url, toFile: testImage1Path, begin, progress, background, progressDivider }).then(res => {
-            this.setState({ output: JSON.stringify(res) });
+        RNFS.downloadFile({
+            fromUrl: url,
+            toFile: testImage1Path,
+            begin,
+            progress,
+            background,
+            progressDivider
+        }).promise.then(info => {
+            this.setState({output: JSON.stringify(info)});
         }).catch(err => this.showError(err));
-
-
     }
 
 
