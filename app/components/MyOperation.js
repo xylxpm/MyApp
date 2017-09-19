@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Platform,
     Image,
+    Modal,
     Text, Switch,
     View
 } from 'react-native';
@@ -19,7 +20,23 @@ import {logOut} from '../actions/UserAction';
 
 class MyOperation extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            animationType: 'none',
+            modalVisible: false,
+            transparent: true
+        }
+    }
+
+
+    _setModalVisible =(visible)=>{
+        this.setState({
+            modalVisible:visible
+        })
+    }
+
+    _startShow=()=>{
+        alert('开始')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -28,8 +45,29 @@ class MyOperation extends Component {
 
     render() {
         const UserReducer = this.props.UserReducer;
+        let modalBG = {
+            backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.5)',
+        }
+
+
+        let innerContainer = this.state.transparent ? { backgroundColor: '#fff', padding: 20 } : null;
+
         return (
             <View style={[styles.flex]}>
+                <Modal
+                    animationType={this.state.animationType}
+                    visible={this.state.modalVisible}
+                    transparent={this.state.transparent}
+                    onRequestClose={() => { this._setModalVisible(false) } }
+                >
+                    <View style={[styles.container, modalBG]}>
+                        <View style={[styles.innerContainer, innerContainer]}>
+                            <Text>我是历史记录</Text>
+                            <TouchableOpacity onPress={this._setModalVisible.bind(this,false)}><Text>点击我关闭</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
                 <View style={[styles.flexb]}>
                     <View style={[styles.flexDRow]}>
                         <Ionicons
@@ -38,7 +76,7 @@ class MyOperation extends Component {
                             style={{ color: colors.blue,}}
                         />
                         <View style={[styles.rowRight]}>
-                            <Text style={{flex:1}}>历史记录</Text>
+                            <TouchableOpacity style={{flex:1}} onPress={this._setModalVisible.bind(this,true)}><Text >历史记录</Text></TouchableOpacity>
                             <Ionicons
                                 name={'ios-arrow-forward'}
                                 size={26}
@@ -219,7 +257,17 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         color: colors.appColor,
         textAlign: 'center'
-    }
+    },
+    innerContainer: {
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
 })
 
 

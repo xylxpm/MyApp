@@ -5,8 +5,6 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
-    Modal,
-    TouchableOpacity,
     View
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,31 +16,12 @@ import MyTabBar from '../../components/MyTabBar';
 class Main_Questions extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            animationType: 'none',
-            modalVisible: false,
-            transparent: true
-        }
+
     }
 
 
-    _setModalVisible =(visible)=>{
-        this.setState({
-            modalVisible:visible
-        })
-    }
-
-    _startShow=()=>{
-        alert('开始')
-    }
 
     render() {
-        let modalBG = {
-            backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-        }
-
-
-        let innerContainer = this.state.transparent ? { backgroundColor: '#fff', padding: 20 } : null;
 
         return (
             <ScrollableTabView
@@ -55,23 +34,8 @@ class Main_Questions extends Component {
 
             >
                 <View tabLabel="全部" style={styles.center}>
-                    <Modal
-                        animationType={this.state.animationType}
-                        visible={this.state.modalVisible}
-                        transparent={this.state.transparent}
-                        onRequestClose={() => { this._setModalVisible(false) } }
-                    >
-                        <View style={[styles.container, modalBG]}>
-                            <View style={[styles.innerContainer, innerContainer]}>
-                                <Text>我是modal</Text>
-                                <TouchableOpacity onPress={this._setModalVisible.bind(this,false)}><Text>点击我关闭</Text></TouchableOpacity>
-                            </View>
 
-
-                        </View>
-
-                    </Modal>
-                    <TouchableOpacity onPress={this._setModalVisible.bind(this,true)}><Text>点击我</Text></TouchableOpacity>
+                    <Text>全部</Text>
                 </View>
                 <View tabLabel="基础" style={styles.center}>
                     <Text >基础</Text>
@@ -113,10 +77,7 @@ const styles = StyleSheet.create({
         color: '#333333',
         marginBottom: 5,
     },
-    innerContainer: {
-        borderRadius: 10,
-        alignItems: 'center',
-    },
+
 })
 
 
