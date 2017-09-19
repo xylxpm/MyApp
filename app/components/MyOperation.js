@@ -76,7 +76,7 @@ class MyOperation extends Component {
                             style={{ color: colors.blue,}}
                         />
                         <View style={[styles.rowRight]}>
-                            <TouchableOpacity style={{flex:1}} onPress={this._setModalVisible.bind(this,true)}><Text >历史记录</Text></TouchableOpacity>
+                            <Text style={{flex:1}} onPress={this._setModalVisible.bind(this,true)}>历史记录（modal实例）</Text>
                             <Ionicons
                                 name={'ios-arrow-forward'}
                                 size={26}
@@ -92,7 +92,7 @@ class MyOperation extends Component {
                             style={{ color: colors.yellow,}}
                         />
                         <View style={[styles.rowRight]}>
-                            <Text style={{flex:1}}>我的路径</Text>
+                            <Text onPress={() => this.props.navigation.navigate('Other')} style={{flex:1}}>我的路径</Text>
                             <Ionicons
                                 name={'ios-arrow-forward'}
                                 size={26}
