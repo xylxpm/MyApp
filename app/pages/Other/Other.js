@@ -64,6 +64,7 @@ class Other extends Component {
                     word: '捕捉到URL：' + url
                 })
             } else {
+                console.log('33333');
                 this.setState({
                     word: 'url为空'
                 })

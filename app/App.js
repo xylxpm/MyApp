@@ -32,6 +32,7 @@ import Customer from './pages/Customer/Customer';
 
 import Feedback from './pages/Other/Feedback';
 import About from './pages/Other/About';
+
 import Other from './pages/Other/Other';
 
 import Splash from './pages/Other/Splash';
