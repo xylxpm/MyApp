@@ -9,15 +9,29 @@ import App from './app/App';
 
 
 export default class Root extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-
+        this.state={
+            store:null
+        }
+    }
+    componentDidMount(){
+        const store = getStore();
+        this.setState({
+            store:store
+        })
     }
 
     render() {
+        if(!this.state.store){
+            return(
+                <View style={{ flex: 1, justifyContent: 'center',alignItems: 'center',}}>
+                    <Text>正在加载store。。。</Text>
+                </View>
+            )
+        }
         return (
-
-            <Provider store={store}>
+            <Provider store={this.state.store}>
                 <App />
             </Provider>
 
